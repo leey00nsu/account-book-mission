@@ -1,23 +1,48 @@
-// app.js
 const express = require('express');
+const path = require('path');
+const db = require('../be/db/database.js');
 const app = express();
-const port = 3000;
-const db = require('./db/database'); // 데이터베이스 모듈 임포트
+const PORT = 3000;
+const cors = require('cors');
 
+// 정적 파일 제공
+app.use(express.static('public'));
+app.use('/dist', express.static('dist'));
+app.use(cors());
+
+// 라우트 설정
 app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-// GET /account_transaction 요청 처리
-app.get('/account_transaction', (req, res) => {
-  db.getAccountTransaction((err, account_transaction) => {
-    if (err) {
-      res.status(500).send('데이터베이스 오류');
-    } else {
-      res.json(account_transaction);
-    }
-  });
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+app.get('/pageA', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pageA.html'));
+});
+
+app.get('/pageB', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'pageB.html'));
+});
+
+// 데이터 API 엔드포인트
+app.get('/account_transaction', async (req, res) => {
+  try {
+    const rows = await new Promise((resolve, reject) => {
+      db.getAccountTransaction((err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          console.log(rows + ' ?');
+          resolve(rows);
+        }
+      });
+    });
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching account transactions:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

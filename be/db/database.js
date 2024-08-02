@@ -8,8 +8,21 @@ const db = new sqlite3.Database('mydatabase.db', err => {
     console.log('데이터베이스 연결 성공');
   }
 });
-
-// hansaem 테이블 생성
+// category 테이블 생성
+db.run(
+  `CREATE TABLE IF NOT EXISTS category (
+      idx INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL
+  )`,
+  err => {
+    if (err) {
+      console.error('category 테이블 생성 오류:', err.message);
+    } else {
+      console.log('category 테이블 생성 성공');
+    }
+  },
+);
+// account_transaction 테이블 생성
 db.run(
   `CREATE TABLE IF NOT EXISTS account_transaction (
     idx INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,26 +42,23 @@ db.run(
   },
 );
 
-// category 테이블 생성
-db.run(
-  `CREATE TABLE IF NOT EXISTS category (
-    idx INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL
-)`,
-  err => {
-    if (err) {
-      console.error('category 테이블 생성 오류:', err.message);
-    } else {
-      console.log('category 테이블 생성 성공');
-    }
-  },
-);
-
-// 모든 transaction 조회 함수
+// 모든 account_transaction 조회 함수
 function getAccountTransaction(callback) {
   db.all('SELECT * FROM account_transaction;', [], (err, rows) => {
     if (err) {
       console.error('account_transaction 테이블 조회 오류:', err.message);
+      callback(err, null);
+    } else {
+      console.log(rows + ' 성공');
+      callback(null, rows);
+    }
+  });
+}
+
+function getCategories(callback) {
+  db.all('SELECT * FROM category;', [], (err, rows) => {
+    if (err) {
+      console.error('category 테이블 조회 오류:', err.message);
       callback(err, null);
     } else {
       callback(null, rows);
@@ -56,11 +66,5 @@ function getAccountTransaction(callback) {
   });
 }
 
-// 데이터베이스 연결 종료
-db.close(err => {
-  if (err) {
-    console.error('데이터베이스 종료 오류:', err.message);
-  } else {
-    console.log('데이터베이스 종료 성공');
-  }
-});
+// 모듈 내보내기
+module.exports = { getAccountTransaction, getCategories };

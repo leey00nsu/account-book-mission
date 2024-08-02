@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-
 const app = express();
 const PORT = 3001;
 
@@ -21,6 +20,9 @@ app.get('/pageB', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pageB.html'));
 });
 
+app.get('/account_transaction', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'account_book.html'));
+});
 app.get('/report', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'report.html'));
 });
