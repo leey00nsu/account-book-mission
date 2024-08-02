@@ -7,6 +7,13 @@ body {
   flex-direction: column;
 }
 
+.transaction-report-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .transaction-report-list-group {
   display: flex;
   gap: 16px;
