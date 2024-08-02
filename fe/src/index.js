@@ -1,5 +1,5 @@
 // 가계부 관련 기능을 가져옵니다.
-import { fetchAccountTransaction } from './features/account_book';
+import { transactionFormInit } from './features/account_book';
 // 거래 보고서 관련 기능을 가져옵니다.
 import {
   reflectDate,
@@ -13,8 +13,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // body 태그의 data-page 속성에서 현재 페이지 타입을 가져옵니다.
   const pageType = document.body.dataset.page;
 
+  console.log(pageType);
+
   // 현재 페이지가 'account-book' 페이지인 경우에만 실행합니다.
   if (pageType === 'account-book') {
+    transactionFormInit();
+
     // 데이터 로딩 중임을 UI에 표시합니다.
 
     fetchAccountTransaction();
