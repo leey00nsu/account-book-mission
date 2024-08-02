@@ -21,6 +21,10 @@ app.get('/pageB', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pageB.html'));
 });
 
+app.get('/report', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'report.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
