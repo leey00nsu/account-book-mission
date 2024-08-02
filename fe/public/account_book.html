@@ -4,115 +4,251 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account_Book</title>
+    <link rel="stylesheet" href="accountBook.css" />
   </head>
-  <body>
-    <div align="center">
-      <div>Account_Book</div>
+  <body data-page="account-book">
+    <div class="app-container">
+      <div align="center">
+        <div>Account_Book</div>
+      </div>
     </div>
-    <br />
-    <br />
-    <div style="width: 100%; overflow: hidden">
-      <!-- 왼쪽 영역 (60%) -->
-      <div style="float: left; width: 60%; box-sizing: border-box">
-        <div>transcation_list</div>
-        <br />
-        <br />
-        <!-- 버튼 그룹 -->
-        <div style="overflow: hidden">
-          <!-- Clearfix -->
-          <div style="float: left; width: 33%">
-            <button>전체</button>
-          </div>
-          <div style="float: left; width: 33%">
-            <button>수입</button>
-          </div>
-          <div style="float: left; width: 33%">
-            <button>지출</button>
-          </div>
-        </div>
-        <br />
-        <!-- 입력 및 버튼 그룹 -->
-        <div style="overflow: hidden">
-          <!-- Clearfix -->
-          <div style="float: left; width: 10%">
-            <button>왼쪽</button>
-          </div>
-          <div style="float: left; width: 20%">
-            <input type="date" />
-          </div>
-          <div style="float: left; width: 10%">
-            <button>오른쪽</button>
-          </div>
-          <div style="float: right; width: 38%; box-sizing: border-box">
-            <button>손익계산서</button>
-          </div>
-        </div>
 
-        <br />
-
-        <div style="width: 60%; float: left; box-sizing: border-box">
+    <div class="account-book-group">
+      <div class="transaction-list">
+        <!-- 왼쪽 영역 (60%) -->
+        <div style="float: left; width: 60%; box-sizing: border-box">
           <div>transcation_list</div>
+          <br />
+          <br />
+          <!-- 버튼 그룹 -->
+          <div style="overflow: hidden">
+            <!-- Clearfix -->
+            <div style="float: left; width: 33%">
+              <button>전체</button>
+            </div>
+            <div style="float: left; width: 33%">
+              <button>수입</button>
+            </div>
+            <div style="float: left; width: 33%">
+              <button>지출</button>
+            </div>
+          </div>
+          <br />
+          <!-- 입력 및 버튼 그룹 -->
+          <div style="overflow: hidden">
+            <!-- Clearfix -->
+            <div style="float: left; width: 10%">
+              <button>왼쪽</button>
+            </div>
+            <div style="float: left; width: 20%">
+              <input type="date" />
+            </div>
+            <div style="float: left; width: 10%">
+              <button>오른쪽</button>
+            </div>
+            <div style="float: right; width: 38%; box-sizing: border-box">
+              <button>손익계산서</button>
+            </div>
+          </div>
 
-          <table style="width: 100%; border-collapse: collapse">
-            <thead>
-              <tr>
-                <th
-                  style="
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    background-color: #f2f2f2;
-                    text-align: left;
-                  "
-                >
-                  날짜
-                </th>
-                <th
-                  style="
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    background-color: #f2f2f2;
-                    text-align: left;
-                  "
-                >
-                  분류
-                </th>
-                <th
-                  style="
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    background-color: #f2f2f2;
-                    text-align: left;
-                  "
-                >
-                  내용
-                </th>
-                <th
-                  style="
-                    border: 1px solid #ddd;
-                    padding: 8px;
-                    background-color: #f2f2f2;
-                    text-align: left;
-                  "
-                >
-                  금액
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <tbody id="account_transaction_body">
-                  <!-- Rows will be inserted here -->
-                </tbody>
-              </tr>
-            </tbody>
-          </table>
+          <br />
+
+          <div style="width: 60%; float: left; box-sizing: border-box">
+            <div>transcation_list</div>
+
+            <table style="width: 100%; border-collapse: collapse">
+              <thead>
+                <tr>
+                  <th
+                    style="
+                      border: 1px solid #ddd;
+                      padding: 8px;
+                      background-color: #f2f2f2;
+                      text-align: left;
+                    "
+                  >
+                    날짜
+                  </th>
+                  <th
+                    style="
+                      border: 1px solid #ddd;
+                      padding: 8px;
+                      background-color: #f2f2f2;
+                      text-align: left;
+                    "
+                  >
+                    분류
+                  </th>
+                  <th
+                    style="
+                      border: 1px solid #ddd;
+                      padding: 8px;
+                      background-color: #f2f2f2;
+                      text-align: left;
+                    "
+                  >
+                    내용
+                  </th>
+                  <th
+                    style="
+                      border: 1px solid #ddd;
+                      padding: 8px;
+                      background-color: #f2f2f2;
+                      text-align: left;
+                    "
+                  >
+                    금액
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <tbody id="account_transaction_body">
+                    <!-- Rows will be inserted here -->
+                  </tbody>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <!-- 오른쪽 영역 (40%) -->
-      <div style="float: left; width: 40%; box-sizing: border-box">
-        transcation_form
-      </div>
+
+      <form id="transaction-form" class="transaction-form">
+        <div class="button-group">
+          <input
+            type="radio"
+            id="income-button"
+            name="transaction-type"
+            value="income"
+            checked
+          />
+          <label for="income-button" class="button">수입</label>
+
+          <input
+            type="radio"
+            id="outcome-button"
+            name="transaction-type"
+            value="outcome"
+          />
+          <label for="outcome-button" class="button">지출</label>
+        </div>
+
+        <div class="form-section">
+          <label>날짜</label>
+          <input required id="form-date" type="date" />
+        </div>
+
+        <div class="form-section">
+          <label>금액</label>
+          <input required id="form-amount" type="number" />
+        </div>
+
+        <div class="form-section">
+          <label>분류</label>
+          <input
+            readonly
+            required
+            value="식비"
+            id="form-category"
+            type="text"
+          />
+        </div>
+
+        <div class="form-section">
+          <label>내용</label>
+          <input required id="form-description" type="text" />
+        </div>
+
+        <div class="form-section">
+          <button id="form-submit-button" type="submit" class="button">
+            제출
+          </button>
+        </div>
+      </form>
     </div>
+
+    <dialog id="category-modal">
+      <form method="dialog" id="category-form" class="category-form">
+        <div class="button-group button-group-column">
+          <input
+            type="radio"
+            id="category-button-1"
+            name="category-type"
+            value="식비"
+            checked
+          />
+          <label for="category-button-1" class="button category-button"
+            >식비</label
+          >
+
+          <input
+            type="radio"
+            id="category-button-2"
+            name="category-type"
+            value="엔터테인먼트"
+          />
+          <label for="category-button-2" class="button">엔터테인먼트</label>
+
+          <input
+            type="radio"
+            id="category-button-3"
+            name="category-type"
+            value="주거"
+          />
+          <label for="category-button-3" class="button">주거</label>
+
+          <input
+            type="radio"
+            id="category-button-4"
+            name="category-type"
+            value="교통"
+          />
+          <label for="category-button-4" class="button">교통</label>
+
+          <input
+            type="radio"
+            id="category-button-5"
+            name="category-type"
+            value="의류"
+          />
+          <label for="category-button-5" class="button">의류</label>
+
+          <input
+            type="radio"
+            id="category-button-6"
+            name="category-type"
+            value="의료"
+          />
+          <label for="category-button-6" class="button">의료</label>
+
+          <input
+            type="radio"
+            id="category-button-7"
+            name="category-type"
+            value="통신"
+          />
+          <label for="category-button-7" class="button">통신</label>
+
+          <input
+            type="radio"
+            id="category-button-8"
+            name="category-type"
+            value="교육"
+          />
+          <label for="category-button-8" class="button">교육</label>
+
+          <input
+            type="radio"
+            id="category-button-9"
+            name="category-type"
+            value="건강"
+          />
+          <label for="category-button-9" class="button">건강</label>
+        </div>
+        <button type="submit" class="button">확인</button>
+      </form>
+    </dialog>
+
     <script src="/dist/bundle.js"></script>
   </body>
 </html>
