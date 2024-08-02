@@ -83,3 +83,10 @@ body {
     border-bottom-right-radius: 6px;
   }
 }
+
+.transaction-report-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
