@@ -8,6 +8,14 @@
   </head>
   <body data-page="report">
     <div class="app-container">
+      <div class="transaction-report-header">
+        <h3>손익 계산서</h3>
+        <div class="report-date-wrapper">
+          <span id="report-start-date"></span>
+          <span>~</span>
+          <span id="report-end-date"></span>
+        </div>
+      </div>
       <div class="transaction-report-list-group">
         <div class="transaction-report-list">
           <div class="list-header">
@@ -44,6 +52,13 @@
             </thead>
             <tbody></tbody>
           </table>
+        </div>
+      </div>
+
+      <div class="transaction-report-summary">
+        <div class="summary-wrapper">
+          <span>총 순수익 :</span>
+          <span id="summary-profit"></span>
         </div>
       </div>
     </div>

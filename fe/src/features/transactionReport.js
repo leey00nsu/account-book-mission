@@ -1,4 +1,5 @@
 import { addComma } from '../utils/addComma';
+import { getFirstAndLastDay } from '../utils/getMonthRange';
 
 const MOCK_TRANSACTION_REPORT = {
   profit: 6375000,
@@ -204,6 +205,7 @@ export function showReportDataLoading() {
 // 거래 보고서 데이터를 UI에 반영하는 함수
 export function reflectTransactionReport(data) {
   // DOM 요소 선택
+
   const totalIncome = document.getElementById('total-income');
   const totalOutcome = document.getElementById('total-outcome');
   const incomeListTableBody = document.querySelector(
@@ -244,4 +246,35 @@ export function reflectTransactionReport(data) {
 
     outcomeListTableBody.appendChild(newRow);
   });
+}
+
+/**
+ * URL 쿼리 파라미터에서 'date'를 가져와 변환합니다.
+ * 입력 날짜는 'YYYY-MM' 형식이어야 합니다.
+ * @returns {string} 날짜 문자열 (YYYY-MM)
+ */
+export function getDate() {
+  // URL의 쿼리 파라미터를 파싱합니다.
+  const urlSearch = new URLSearchParams(location.search);
+
+  // 'date' 파라미터 값을 가져옵니다.
+  const inputDate = urlSearch.get('date');
+
+  return inputDate;
+}
+
+// 날짜 데이터를 UI에 반영하는 함수
+export function reflectDate() {
+  const [currentYear, currentMonth] = getDate().split('-');
+  const { firstDay, lastDay } = getFirstAndLastDay(
+    Number(currentYear),
+    Number(currentMonth),
+  );
+
+  const reportStartDate = document.getElementById('report-start-date');
+  const reportEndDate = document.getElementById('report-end-date');
+
+  // 시작 날짜와 종료 날짜 표시
+  reportStartDate.innerHTML = `<span>${firstDay}</span>`;
+  reportEndDate.innerHTML = `<span>${lastDay}</span>`;
 }

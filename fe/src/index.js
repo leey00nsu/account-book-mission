@@ -2,6 +2,7 @@
 import { fetchAccountTransaction } from './features/account_book';
 // 거래 보고서 관련 기능을 가져옵니다.
 import {
+  reflectDate,
   showReportDataLoading,
   getTransactionReportData,
   reflectTransactionReport,
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   // 현재 페이지가 'report' 페이지인 경우에만 실행합니다.
   if (pageType === 'report') {
+    reflectDate();
+
     // 데이터 로딩 중임을 UI에 표시합니다.
     showReportDataLoading();
 
