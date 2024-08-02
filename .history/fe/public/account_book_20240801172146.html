@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account_Book</title>
+  </head>
+  <body>
+    <div align="center">
+      <div>Account_Book</div>
+    </div>
+    <br />
+    <br />
+    <div style="width: 100%; overflow: hidden">
+      <!-- 왼쪽 영역 (60%) -->
+      <div style="float: left; width: 60%; box-sizing: border-box">
+        <div>transcation_list</div>
+        <br />
+        <br />
+        <br />
+        <!-- 버튼 그룹 -->
+        <div style="overflow: hidden">
+          <!-- Clearfix -->
+          <div style="float: left; width: 33%">
+            <button>전체</button>
+          </div>
+          <div style="float: left; width: 33%">
+            <button>수입</button>
+          </div>
+          <div style="float: left; width: 33%">
+            <button>지출</button>
+          </div>
+        </div>
+        <br />
+        <!-- 입력 및 버튼 그룹 -->
+        <div style="overflow: hidden">
+          <!-- Clearfix -->
+          <div style="float: left; width: 10%">
+            <button>왼쪽</button>
+          </div>
+          <div style="float: left; width: 20%">
+            <input type="date" />
+          </div>
+          <div style="float: left; width: 10%">
+            <button>오른쪽</button>
+          </div>
+          <div style="float: right; width: 38%; box-sizing: border-box">
+            <button>손익계산서</button>
+          </div>
+        </div>
+
+        <br />
+        <div style="width: 60%; float: left; box-sizing: border-box">
+          <div>transcation_list</div>
+
+          <table style="width: 100%; border-collapse: collapse">
+            <thead>
+              <tr>
+                <th
+                  style="
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    background-color: #f2f2f2;
+                    text-align: left;
+                  "
+                >
+                  날짜
+                </th>
+                <th
+                  style="
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    background-color: #f2f2f2;
+                    text-align: left;
+                  "
+                >
+                  분류
+                </th>
+                <th
+                  style="
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    background-color: #f2f2f2;
+                    text-align: left;
+                  "
+                >
+                  내용
+                </th>
+                <th
+                  style="
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                    background-color: #f2f2f2;
+                    text-align: left;
+                  "
+                >
+                  금액
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="border: 1px solid #ddd; padding: 8px">2024-08-01</td>
+                <!-- 임의의 날짜 -->
+                <td style="border: 1px solid #ddd; padding: 8px">식비</td>
+                <!-- 임의의 분류 -->
+                <td style="border: 1px solid #ddd; padding: 8px">점심식사</td>
+                <!-- 임의의 내용 -->
+                <td style="border: 1px solid #ddd; padding: 8px">10,000원</td>
+                <!-- 임의의 금액 -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- 오른쪽 영역 (40%) -->
+      <div style="float: left; width: 40%; box-sizing: border-box">
+        transcation_form
+      </div>
+    </div>
+  </body>
+  <script src="/dist/bundle.js"></script>
+</html>
