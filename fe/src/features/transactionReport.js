@@ -1,5 +1,5 @@
 import { addComma } from '../utils/addComma';
-import { getFirstAndLastDay } from '../utils/getMonthRange';
+import { getFirstAndLastDay } from '../utils/getFirstAndLastDay';
 
 const MOCK_TRANSACTION_REPORT = {
   profit: 6375000,
@@ -194,12 +194,14 @@ export function showReportDataLoading() {
   const outcomeListTableBody = document.querySelector(
     '#outcome-report-table tbody',
   );
+  const summaryProfit = document.getElementById('summary-profit');
 
   // 로딩 중 텍스트 표시
   totalIncome.innerHTML = '<span>loading ...</span>';
   totalOutcome.innerHTML = '<span>loading ...</span>';
   incomeListTableBody.innerHTML = '<span>loading ...</span>';
   outcomeListTableBody.innerHTML = '<span>loading ...</span>';
+  summaryProfit.innerHTML = '<span>loading ...</span>';
 }
 
 // 거래 보고서 데이터를 UI에 반영하는 함수
@@ -214,6 +216,7 @@ export function reflectTransactionReport(data) {
   const outcomeListTableBody = document.querySelector(
     '#outcome-report-table tbody',
   );
+  const summaryProfit = document.getElementById('summary-profit');
 
   // 총 수입과 지출 표시 (천 단위 구분자 추가)
   totalIncome.innerHTML = `<span>${addComma(data.totalIncome)}</span>`;
@@ -246,6 +249,8 @@ export function reflectTransactionReport(data) {
 
     outcomeListTableBody.appendChild(newRow);
   });
+
+  summaryProfit.innerHTML = `<span>${addComma(data.profit)}</span>`;
 }
 
 /**
