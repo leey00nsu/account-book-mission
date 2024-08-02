@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-report-list-group {
+  display: flex;
+  gap: 16px;
+}
+
+.transaction-report-list {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.transaction-report-list .list-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  font-size: large;
+  font-weight: 600;
+}
+
+.transaction-report-list-table {
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 6px 15px;
+  }
+
+  th {
+    background: #42444e;
+    color: #fff;
+    text-align: left;
+  }
+
+  tr:first-child th:first-child {
+    border-top-left-radius: 6px;
+  }
+
+  tr:first-child th:last-child {
+    border-top-right-radius: 6px;
+  }
+
+  td {
+    border-right: 1px solid #c6c9cc;
+    border-bottom: 1px solid #c6c9cc;
+  }
+
+  td:first-child {
+    border-left: 1px solid #c6c9cc;
+  }
+
+  tr:nth-child(even) td {
+    background: #eaeaed;
+  }
+
+  tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+  }
+
+  tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>리포트</title>
+    <link rel="stylesheet" href="./report.css" />
+  </head>
+  <body data-page="report">
+    <div class="app-container">
+      <div class="transaction-report-list-group">
+        <div class="transaction-report-list">
+          <div class="list-header">
+            <span>총 지출 : </span>
+            <span id="total-outcome"></span>
+          </div>
+
+          <table
+            id="outcome-report-table"
+            class="transaction-report-list-table"
+          >
+            <thead>
+              <tr>
+                <th>분류</th>
+                <th>금액</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="transaction-report-list">
+          <div class="list-header">
+            <span>총 수익 : </span>
+            <span id="total-income"></span>
+          </div>
+
+          <table id="income-report-table" class="transaction-report-list-table">
+            <thead>
+              <tr>
+                <th>분류</th>
+                <th>금액</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="/dist/bundle.js"></script>
+  </body>
+</html>
