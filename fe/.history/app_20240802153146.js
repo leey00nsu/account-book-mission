@@ -21,7 +21,13 @@ app.get('/pageB', (req, res) => {
 });
 
 app.get('/account_transaction', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'account_book.html'));
+  getAccountTransaction((err, rows) => {
+    if (err) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(rows);
+    }
+  });
 });
 app.get('/report', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'report.html'));

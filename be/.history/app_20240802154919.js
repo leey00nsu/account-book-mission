@@ -8,7 +8,7 @@ const cors = require('cors');
 // 정적 파일 제공
 app.use(express.static('public'));
 app.use('/dist', express.static('dist'));
-app.use(cors());
+app.use(cors);
 
 // 라우트 설정
 app.get('/', (req, res) => {

@@ -1,11 +1,14 @@
 const express = require('express');
 const path = require('path');
+const db = require('../be/db/database.js');
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
+const cors = require('cors');
 
 // 정적 파일 제공
 app.use(express.static('public'));
 app.use('/dist', express.static('dist'));
+app.use(cors);
 
 // 라우트 설정
 app.get('/', (req, res) => {
@@ -20,11 +23,15 @@ app.get('/pageB', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pageB.html'));
 });
 
-app.get('/account_transaction', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'account_book.html'));
-});
-app.get('/report', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'report.html'));
+app.get('/account_transaction', async (req, res) => {
+  try {
+    const rows = await getAccountTransaction(); // 비동기 함수 호출
+    console.log('Data from database:', rows); // 데이터 확인
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching account transactions:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.listen(PORT, () => {

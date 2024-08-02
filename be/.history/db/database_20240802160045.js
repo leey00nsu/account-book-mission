@@ -66,5 +66,9 @@ function getCategories(callback) {
   });
 }
 
+function insertAccountTransaction(callback) {
+  db.all('INSERT INTO ');
+}
+
 // 모듈 내보내기
 module.exports = { getAccountTransaction, getCategories };

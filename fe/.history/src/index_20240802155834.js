@@ -1,5 +1,3 @@
-// 가계부 관련 기능을 가져옵니다.
-import { fetchAccountTransaction } from './features/account_book';
 // 거래 보고서 관련 기능을 가져옵니다.
 import {
   showReportDataLoading,
