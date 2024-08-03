@@ -204,6 +204,12 @@ function transactionListInit() {
       fetchAccountTransaction(currentType, currentDate);
     });
 
+  document.getElementById('report-button').addEventListener('click', () => {
+    const currentDate = getTransactionDate();
+
+    window.location.href = `/report?date=${currentDate}`;
+  });
+
   // document.querySelectorAll('input[name="category"]').forEach(radio => {
   //   radio.addEventListener('change', event => {
   //     const selectedValue = event.target.value;
