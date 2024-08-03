@@ -281,7 +281,7 @@ function transactionListInit() {
 function submitForm() {
   // 선택된 거래 유형(수입/지출) 가져오기
   const transactionType = document.querySelector(
-    'input[name="transaction-type"]:checked',
+    'input[name="form-transaction-type"]:checked',
   ).value;
 
   // 폼에서 거래 정보 가져오기
