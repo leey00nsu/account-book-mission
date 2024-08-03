@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account_Book</title>
     <link rel="stylesheet" href="accountBook.css" />
-    <link rel="stylesheet" href="transactionList.css" />
   </head>
   <body data-page="account-book">
     <div class="app-container">
@@ -26,63 +25,61 @@
             <!-- Clearfix -->
             <div class="radio-group">
               <label>
-                  <input type="radio" name="category" value="whole" checked>
-                  전체
+                <input type="radio" name="category" value="whole" checked />
+                전체
               </label>
-          </div>
-          <div class="radio-group">
+            </div>
+            <div class="radio-group">
               <label>
-                  <input type="radio" name="category" value="income">
-                  수입
+                <input type="radio" name="category" value="income" />
+                수입
               </label>
-          </div>
-          <div class="radio-group">
+            </div>
+            <div class="radio-group">
               <label>
-                  <input type="radio" name="category" value="outcome">
-                  지출
+                <input type="radio" name="category" value="outcome" />
+                지출
               </label>
-          </div>
-
+            </div>
           </div>
           <br />
           <!-- 입력 및 버튼 그룹 -->
           <div style="overflow: hidden">
             <!-- Clearfix -->
             <span id="month-button">
-              <button id="before-month" class="button"> &lt; </button>
+              <button id="before-month" class="button">&lt;</button>
             </span>
-            <span id="transaction-year">
-            </span>
-              -
-            <span style=" width: 20%; margin-right:30px;" id="transaction-month">
+            <span id="transaction-year"> </span>
+            -
+            <span style="width: 20%; margin-right: 30px" id="transaction-month">
             </span>
             <span id="month_button">
-              <button id="after-month" class="button">  &gt; </button>
+              <button id="after-month" class="button">&gt;</button>
             </span>
-            <span style=" width: 38%; box-sizing: border-box">
+            <span style="width: 38%; box-sizing: border-box">
               <button class="button">손익계산서</button>
             </span>
           </div>
-          
+
           <br />
-            <table style="width: 100%; border-collapse: collapse">
-              <thead>
-                <tr>
-                  <th class = "menu-title"> 날짜 </th>
-                  <th class = "menu-title"> 분류 </th>
-                  <th class = "menu-title"> 내용 </th>
-                  <th class = "menu-title"> 금액 </th>
-                  <th class = "menu-title"> 수입/지출 </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <tbody id="account_transaction_body">
-                    <!-- Rows will be inserted here -->
-                  </tbody>
-                </tr>
-              </tbody>
-            </table>
+          <table style="width: 100%; border-collapse: collapse">
+            <thead>
+              <tr>
+                <th class="menu-title">날짜</th>
+                <th class="menu-title">분류</th>
+                <th class="menu-title">내용</th>
+                <th class="menu-title">금액</th>
+                <th class="menu-title">수입/지출</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <tbody id="account_transaction_body">
+                  <!-- Rows will be inserted here -->
+                </tbody>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
