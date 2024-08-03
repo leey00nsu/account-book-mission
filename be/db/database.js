@@ -8,20 +8,7 @@ const db = new sqlite3.Database('mydatabase.db', err => {
     console.log('데이터베이스 연결 성공');
   }
 });
-// category 테이블 생성
-db.run(
-  `CREATE TABLE IF NOT EXISTS category (
-      idx INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL
-  )`,
-  err => {
-    if (err) {
-      console.error('category 테이블 생성 오류:', err.message);
-    } else {
-      console.log('category 테이블 생성 성공');
-    }
-  },
-);
+
 // account_transaction 테이블 생성
 db.run(
   `CREATE TABLE IF NOT EXISTS account_transaction (
@@ -30,8 +17,7 @@ db.run(
     amount INTEGER NOT NULL,
     description TEXT,
     date TEXT,
-    category_idx INTEGER,
-    FOREIGN KEY (category_idx) REFERENCES category(idx)
+    category TEXT
 )`,
   err => {
     if (err) {
@@ -55,16 +41,7 @@ function getAccountTransaction(callback) {
   });
 }
 
-function getCategories(callback) {
-  db.all('SELECT * FROM category;', [], (err, rows) => {
-    if (err) {
-      console.error('category 테이블 조회 오류:', err.message);
-      callback(err, null);
-    } else {
-      callback(null, rows);
-    }
-  });
-}
+
 
 // 모듈 내보내기
-module.exports = { getAccountTransaction, getCategories };
+module.exports = { getAccountTransaction };
