@@ -171,10 +171,10 @@ const MOCK_TRANSACTION_REPORT = {
   ],
 };
 
-// 거래 보고서 데이터를 가져오는 함수
-export function getTransactionReportData() {
-  // 실제 데이터 fetch 추가 (현재는 구현되지 않음)
-
+/**
+ *  거래 보고서 데이터를 요청하는 더미 함수
+ */
+function mockFetchTransactionReport() {
   // 목업 데이터를 사용하여 비동기 작업 시뮬레이션
   return new Promise(resolve => {
     setTimeout(() => {
@@ -183,8 +183,30 @@ export function getTransactionReportData() {
   });
 }
 
+/**
+ *  거래 보고서 데이터를 요청하는 함수
+ */
+async function fetchTransactionReport() {
+  showReportDataLoading();
+
+  const date = getDate();
+
+  try {
+    // fetch를 이용해 서버에 GET 요청을 보냅니다.
+    const response = await fetch(`http://localhost:3000/report?date=${date}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching accountTransaction:', error);
+  }
+}
+
 // 보고서 데이터 로딩 중 UI 표시 함수
-export function showReportDataLoading() {
+function showReportDataLoading() {
   // DOM 요소 선택
   const totalOutcome = document.getElementById('total-outcome');
   const totalIncome = document.getElementById('total-income');
@@ -205,7 +227,7 @@ export function showReportDataLoading() {
 }
 
 // 거래 보고서 데이터를 UI에 반영하는 함수
-export function reflectTransactionReport(data) {
+function reflectTransactionReport(data) {
   // DOM 요소 선택
 
   const totalIncome = document.getElementById('total-income');
@@ -219,8 +241,8 @@ export function reflectTransactionReport(data) {
   const summaryProfit = document.getElementById('summary-profit');
 
   // 총 수입과 지출 표시 (천 단위 구분자 추가)
-  totalIncome.innerHTML = `<span>${addComma(data.totalIncome)}</span>`;
-  totalOutcome.innerHTML = `<span>${addComma(data.totalOutcome)}</span>`;
+  totalIncome.innerHTML = `<span>${addComma(data.totalIncome)} 원</span>`;
+  totalOutcome.innerHTML = `<span>${addComma(data.totalOutcome)} 원</span>`;
 
   // 기존 테이블 내용 초기화
   incomeListTableBody.innerHTML = '<span></span>';
@@ -231,8 +253,8 @@ export function reflectTransactionReport(data) {
     const newRow = document.createElement('tr');
 
     newRow.innerHTML = `
-      <td>${income.category_title}</td>
-      <td>${addComma(income.amount)}</td>
+      <td>${income.category}</td>
+      <td>${addComma(income.amount)} 원</td>
     `;
 
     incomeListTableBody.appendChild(newRow);
@@ -243,14 +265,14 @@ export function reflectTransactionReport(data) {
     const newRow = document.createElement('tr');
 
     newRow.innerHTML = `
-      <td>${outcome.category_title}</td>
-      <td>${addComma(outcome.amount)}</td>
+      <td>${outcome.category}</td>
+      <td>${addComma(outcome.amount)} 원</td>
     `;
 
     outcomeListTableBody.appendChild(newRow);
   });
 
-  summaryProfit.innerHTML = `<span>${addComma(data.profit)}</span>`;
+  summaryProfit.innerHTML = `<span>${addComma(data.profit)} 원</span>`;
 }
 
 /**
@@ -258,7 +280,7 @@ export function reflectTransactionReport(data) {
  * 입력 날짜는 'YYYY-MM' 형식이어야 합니다.
  * @returns {string} 날짜 문자열 (YYYY-MM)
  */
-export function getDate() {
+function getDate() {
   // URL의 쿼리 파라미터를 파싱합니다.
   const urlSearch = new URLSearchParams(location.search);
 
@@ -269,7 +291,7 @@ export function getDate() {
 }
 
 // 날짜 데이터를 UI에 반영하는 함수
-export function reflectDate() {
+function reflectDate() {
   const [currentYear, currentMonth] = getDate().split('-');
   const { firstDay, lastDay } = getFirstAndLastDay(
     Number(currentYear),
@@ -282,4 +304,17 @@ export function reflectDate() {
   // 시작 날짜와 종료 날짜 표시
   reportStartDate.innerHTML = `<span>${firstDay}</span>`;
   reportEndDate.innerHTML = `<span>${lastDay}</span>`;
+}
+
+/**
+ * 거래 보고서 페이지 초기화 함수
+ */
+export async function reportInit() {
+  reflectDate();
+
+  // 거래 보고서 데이터를 비동기적으로 가져옵니다.
+  const data = await fetchTransactionReport();
+
+  // 가져온 데이터를 UI에 반영합니다.
+  reflectTransactionReport(data);
 }
