@@ -79,18 +79,18 @@ function reflectTransactionList(accountTransactions) {
   //   amountCell.textContent = transaction.amount;
   //   amountCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
 
-  //   const incomeOutcomeCell = document.createElement('td');
+  //   const incomeExpenseCell = document.createElement('td');
   //   let value = '수입';
 
-  //   if (transaction.income_outcome === -1) value = '지출';
-  //   incomeOutcomeCell.textContent = value;
-  //   incomeOutcomeCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+  //   if (transaction.income_expense === -1) value = '지출';
+  //   incomeExpenseCell.textContent = value;
+  //   incomeExpenseCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
 
   //   row.appendChild(dateCell);
   //   row.appendChild(categoryCell);
   //   row.appendChild(descriptionCell);
   //   row.appendChild(amountCell);
-  //   row.appendChild(incomeOutcomeCell);
+  //   row.appendChild(incomeExpenseCell);
 
   //   tableBody.appendChild(row);
   // });
@@ -213,15 +213,15 @@ function transactionListInit() {
   // document.querySelectorAll('input[name="category"]').forEach(radio => {
   //   radio.addEventListener('change', event => {
   //     const selectedValue = event.target.value;
-  //     let incomeOutcome = 0;
+  //     let incomeExpense = 0;
 
-  //     if (selectedValue === 'income') incomeOutcome = 1;
-  //     else if (selectedValue === 'outcome') incomeOutcome = -1;
+  //     if (selectedValue === 'income') incomeExpense = 1;
+  //     else if (selectedValue === 'expense') incomeExpense = -1;
 
   //     const month = document.getElementById('transaction-month').innerText;
   //     const year = document.getElementById('transaction-year').innerText;
 
-  //     fetchAccountTransaction(incomeOutcome, year + '-' + month);
+  //     fetchAccountTransaction(incomeExpense, year + '-' + month);
   //   });
   // });
 
@@ -238,12 +238,12 @@ function transactionListInit() {
   //     'input[name="category"]:checked',
   //   ).value;
 
-  //   let incomeOutcome = 0;
+  //   let incomeExpense = 0;
 
-  //   if (initialValue === 'income') incomeOutcome = 1;
-  //   else if (initialValue === 'outcome') incomeOutcome = -1;
+  //   if (initialValue === 'income') incomeExpense = 1;
+  //   else if (initialValue === 'expense') incomeExpense = -1;
 
-  //   fetchAccountTransaction(incomeOutcome, year + '-' + month);
+  //   fetchAccountTransaction(incomeExpense, year + '-' + month);
 
   //   const monthCell = document.getElementById('transaction-month');
   //   const yearCell = document.getElementById('transaction-year');
@@ -265,12 +265,12 @@ function transactionListInit() {
   //     'input[name="category"]:checked',
   //   ).value;
 
-  //   let incomeOutcome = 0;
+  //   let incomeExpense = 0;
 
-  //   if (initialValue === 'income') incomeOutcome = 1;
-  //   else if (initialValue === 'outcome') incomeOutcome = -1;
+  //   if (initialValue === 'income') incomeExpense = 1;
+  //   else if (initialValue === 'expense') incomeExpense = -1;
 
-  //   fetchAccountTransaction(incomeOutcome, year + '-' + month);
+  //   fetchAccountTransaction(incomeExpense, year + '-' + month);
   //   fetchAccountTransaction('0', year + '-' + month);
 
   //   const monthCell = document.getElementById('transaction-month');
@@ -301,7 +301,7 @@ function submitForm() {
 
   // 제출할 데이터 객체 생성
   const body = {
-    income_outcome: transactionType,
+    type: transactionType,
     category: transactionCategory,
     amount: transactionAmount,
     description: transactionDescription,

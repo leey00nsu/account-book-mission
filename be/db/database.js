@@ -13,7 +13,7 @@ const db = new sqlite3.Database('mydatabase.db', err => {
 db.run(
   `CREATE TABLE IF NOT EXISTS account_transaction (
     idx INTEGER PRIMARY KEY AUTOINCREMENT,
-    income_outcome INTEGER NOT NULL,
+    income_expense INTEGER NOT NULL,
     amount INTEGER NOT NULL,
     description TEXT,
     date TEXT,
@@ -32,9 +32,9 @@ function getAccountTransaction(type, date, callback) {
   let query = 'SELECT * FROM account_transaction where 1=1';
 
   if (type !== 'all') {
-    const income_outcome = type === 'income' ? 1 : 0;
+    const income_expense = type === 'income' ? 1 : 0;
 
-    query += ` AND income_outcome = ${income_outcome}`;
+    query += ` AND income_expense = ${income_expense}`;
   }
 
   if (date !== null && date !== undefined) {
@@ -58,10 +58,10 @@ function getAccountTransaction(type, date, callback) {
 
 function getTransactionReport(date, callback) {
   const query = `
-    SELECT income_outcome, category, SUM(amount) as total_amount
+    SELECT income_expense, category, SUM(amount) as total_amount
     FROM account_transaction
     WHERE date LIKE ?
-    GROUP BY income_outcome, category
+    GROUP BY income_expense, category
 `;
 
   db.all(query, [date + '%'], (err, rows) => {
@@ -70,12 +70,12 @@ function getTransactionReport(date, callback) {
       callback(err, null);
     }
 
-    // 결과를 incomes와 outcomes로 나누어 분류
-    // totalIncome, totalOutcome, profit 계산
-    const report = { incomes: [], outcomes: [] };
+    // 결과를 incomes와 expenses로 나누어 분류
+    // totalIncome, totalExpense, profit 계산
+    const report = { incomes: [], expenses: [] };
 
     rows.forEach(row => {
-      const type = row.income_outcome === 1 ? 'incomes' : 'outcomes';
+      const type = row.income_expense === 1 ? 'incomes' : 'expenses';
 
       report[type].push({
         category: row.category,
@@ -88,18 +88,18 @@ function getTransactionReport(date, callback) {
       0,
     );
 
-    const totalOutcome = report.outcomes.reduce(
-      (acc, outcome) => acc + outcome.amount,
+    const totalExpense = report.expenses.reduce(
+      (acc, expense) => acc + expense.amount,
       0,
     );
 
-    const profit = totalIncome - totalOutcome;
+    const profit = totalIncome - totalExpense;
 
     callback(null, {
       totalIncome,
-      totalOutcome,
+      totalExpense,
       incomes: report.incomes,
-      outcomes: report.outcomes,
+      expenses: report.expenses,
       profit,
     });
   });

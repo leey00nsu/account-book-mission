@@ -4,7 +4,7 @@ import { getFirstAndLastDay } from '../utils/getFirstAndLastDay';
 const MOCK_TRANSACTION_REPORT = {
   profit: 6375000,
   totalIncome: 7130000,
-  totalOutcome: 755000,
+  totalExpense: 755000,
   incomes: [
     {
       idx: 1,
@@ -87,7 +87,7 @@ const MOCK_TRANSACTION_REPORT = {
       category_title: '기타수입',
     },
   ],
-  outcomes: [
+  expenses: [
     {
       idx: 1,
       amount: 50000,
@@ -208,21 +208,21 @@ async function fetchTransactionReport() {
 // 보고서 데이터 로딩 중 UI 표시 함수
 function showReportDataLoading() {
   // DOM 요소 선택
-  const totalOutcome = document.getElementById('total-outcome');
+  const totalexpense = document.getElementById('total-expense');
   const totalIncome = document.getElementById('total-income');
   const incomeListTableBody = document.querySelector(
     '#income-report-table tbody',
   );
-  const outcomeListTableBody = document.querySelector(
-    '#outcome-report-table tbody',
+  const expenseListTableBody = document.querySelector(
+    '#expense-report-table tbody',
   );
   const summaryProfit = document.getElementById('summary-profit');
 
   // 로딩 중 텍스트 표시
   totalIncome.innerHTML = '<span>loading ...</span>';
-  totalOutcome.innerHTML = '<span>loading ...</span>';
+  totalexpense.innerHTML = '<span>loading ...</span>';
   incomeListTableBody.innerHTML = '<span>loading ...</span>';
-  outcomeListTableBody.innerHTML = '<span>loading ...</span>';
+  expenseListTableBody.innerHTML = '<span>loading ...</span>';
   summaryProfit.innerHTML = '<span>loading ...</span>';
 }
 
@@ -231,22 +231,22 @@ function reflectTransactionReport(data) {
   // DOM 요소 선택
 
   const totalIncome = document.getElementById('total-income');
-  const totalOutcome = document.getElementById('total-outcome');
+  const totalExpense = document.getElementById('total-expense');
   const incomeListTableBody = document.querySelector(
     '#income-report-table tbody',
   );
-  const outcomeListTableBody = document.querySelector(
-    '#outcome-report-table tbody',
+  const expenseListTableBody = document.querySelector(
+    '#expense-report-table tbody',
   );
   const summaryProfit = document.getElementById('summary-profit');
 
   // 총 수입과 지출 표시 (천 단위 구분자 추가)
   totalIncome.innerHTML = `<span>${addComma(data.totalIncome)} 원</span>`;
-  totalOutcome.innerHTML = `<span>${addComma(data.totalOutcome)} 원</span>`;
+  totalExpense.innerHTML = `<span>${addComma(data.totalExpense)} 원</span>`;
 
   // 기존 테이블 내용 초기화
   incomeListTableBody.innerHTML = '<span></span>';
-  outcomeListTableBody.innerHTML = '<span></span>';
+  expenseListTableBody.innerHTML = '<span></span>';
 
   // 수입 데이터 순회하며 테이블에 행 추가
   data.incomes.forEach(income => {
@@ -261,15 +261,15 @@ function reflectTransactionReport(data) {
   });
 
   // 지출 데이터 순회하며 테이블에 행 추가
-  data.outcomes.forEach(outcome => {
+  data.expenses.forEach(expense => {
     const newRow = document.createElement('tr');
 
     newRow.innerHTML = `
-      <td>${outcome.category}</td>
-      <td>${addComma(outcome.amount)} 원</td>
+      <td>${expense.category}</td>
+      <td>${addComma(expense.amount)} 원</td>
     `;
 
-    outcomeListTableBody.appendChild(newRow);
+    expenseListTableBody.appendChild(newRow);
   });
 
   summaryProfit.innerHTML = `<span>${addComma(data.profit)} 원</span>`;

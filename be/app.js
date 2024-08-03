@@ -29,7 +29,7 @@ app.get('/account-transaction', async (req, res) => {
         category: row.category,
         description: row.description,
         amount: row.amount,
-        type: row.income_outcome === 1 ? '수입' : '지출',
+        type: row.income_expense === 1 ? '수입' : '지출',
       };
     });
 
