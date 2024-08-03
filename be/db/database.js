@@ -28,16 +28,21 @@ db.run(
   },
 );
 
-function getAccountTransaction(income_outcome, date, callback) {
+function getAccountTransaction(type, date, callback) {
   let query = 'SELECT * FROM account_transaction where 1=1';
- 
-  if (income_outcome !== '0' && income_outcome !== null && income_outcome !== undefined) {
+
+  if (type !== 'all') {
+    const income_outcome = type === 'income' ? 1 : 0;
+
     query += ` AND income_outcome = ${income_outcome}`;
   }
 
   if (date !== null && date !== undefined) {
     query += ` AND date like '${date}%'`;
   }
+
+  // 날짜별로 정렬
+  query += ' ORDER BY date ASC';
 
   console.log(query);
 
@@ -50,7 +55,6 @@ function getAccountTransaction(income_outcome, date, callback) {
     }
   });
 }
-
 
 // 모듈 내보내기
 module.exports = { getAccountTransaction };

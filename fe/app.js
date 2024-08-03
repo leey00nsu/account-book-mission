@@ -9,20 +9,9 @@ app.use('/dist', express.static('dist'));
 
 // 라우트 설정
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'accountBook.html'));
 });
 
-app.get('/pageA', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'pageA.html'));
-});
-
-app.get('/pageB', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'pageB.html'));
-});
-
-app.get('/account_transaction', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'account_book.html'));
-});
 app.get('/report', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'report.html'));
 });

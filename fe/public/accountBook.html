@@ -3,107 +3,106 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account_Book</title>
+    <title>가계부</title>
     <link rel="stylesheet" href="accountBook.css" />
-    <link rel="stylesheet" href="transactionList.css" />
   </head>
   <body data-page="account-book">
     <div class="app-container">
-      <div align="center">
-        <div>Account_Book</div>
+      <div class="account-book-header">
+        <div>가계부</div>
       </div>
     </div>
 
     <div class="account-book-group">
       <div class="transaction-list">
-        <!-- 왼쪽 영역 (60%) -->
-        <div id="transcation-list-container">
-          <div>transcation_list</div>
-          <br />
-          <br />
-          <!-- 버튼 그룹 -->
-          <div style="overflow: hidden">
-            <!-- Clearfix -->
-            <div class="radio-group">
-              <label>
-                  <input type="radio" name="category" value="whole" checked>
-                  전체
-              </label>
-          </div>
-          <div class="radio-group">
-              <label>
-                  <input type="radio" name="category" value="income">
-                  수입
-              </label>
-          </div>
-          <div class="radio-group">
-              <label>
-                  <input type="radio" name="category" value="outcome">
-                  지출
-              </label>
+        <div id="transaction-type-group" class="button-group">
+          <div>
+            <input
+              type="radio"
+              id="transaction-all-button"
+              name="transaction-type"
+              value="all"
+              checked
+            />
+            <label for="transaction-all-button" class="button">전체</label>
           </div>
 
+          <div>
+            <input
+              type="radio"
+              id="transaction-income-button"
+              name="transaction-type"
+              value="income"
+            />
+            <label for="transaction-income-button" class="button">수입</label>
           </div>
-          <br />
-          <!-- 입력 및 버튼 그룹 -->
-          <div style="overflow: hidden">
-            <!-- Clearfix -->
-            <span id="month-button">
-              <button id="before-month" class="button"> &lt; </button>
-            </span>
-            <span id="transaction-year">
-            </span>
-              -
-            <span style=" width: 20%; margin-right:30px;" id="transaction-month">
-            </span>
-            <span id="month_button">
-              <button id="after-month" class="button">  &gt; </button>
-            </span>
-            <span style=" width: 38%; box-sizing: border-box">
-              <button class="button">손익계산서</button>
-            </span>
+
+          <div>
+            <input
+              type="radio"
+              id="transaction-outcome-button"
+              name="transaction-type"
+              value="outcome"
+            />
+            <label for="transaction-outcome-button" class="button">지출</label>
           </div>
-          
-          <br />
-            <table style="width: 100%; border-collapse: collapse">
-              <thead>
-                <tr>
-                  <th class = "menu-title"> 날짜 </th>
-                  <th class = "menu-title"> 분류 </th>
-                  <th class = "menu-title"> 내용 </th>
-                  <th class = "menu-title"> 금액 </th>
-                  <th class = "menu-title"> 수입/지출 </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <tbody id="account_transaction_body">
-                    <!-- Rows will be inserted here -->
-                  </tbody>
-                </tr>
-              </tbody>
-            </table>
         </div>
+
+        <div class="transaction-list-header">
+          <button id="previous-month" class="button">&lt;</button>
+
+          <div class="transaction-date-wrapper">
+            <input type="month" id="transaction-date" />
+            <!-- <span id="transaction-year"> </span>
+            <span>-</span>
+            <span id="transaction-month"> </span> -->
+          </div>
+
+          <button id="next-month" class="button">&gt;</button>
+
+          <button id="report-button" class="button">손익 계산서</button>
+        </div>
+
+        <table id="transaction-list-table" class="transaction-list-table">
+          <thead>
+            <tr>
+              <th class="menu-title">날짜</th>
+              <th class="menu-title">분류</th>
+              <th class="menu-title">내용</th>
+              <th class="menu-title">금액</th>
+              <th class="menu-title">수입/지출</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
 
       <form id="transaction-form" class="transaction-form">
         <div class="button-group">
-          <input
-            type="radio"
-            id="income-button"
-            name="transaction-type"
-            value="income"
-            checked
-          />
-          <label for="income-button" class="button">수입</label>
+          <div>
+            <input
+              type="radio"
+              id="transaction-form-income-button"
+              name="form-transaction-type"
+              value="income"
+              checked
+            />
+            <label for="transaction-form-income-button" class="button"
+              >수입</label
+            >
+          </div>
 
-          <input
-            type="radio"
-            id="outcome-button"
-            name="transaction-type"
-            value="outcome"
-          />
-          <label for="outcome-button" class="button">지출</label>
+          <div>
+            <input
+              type="radio"
+              id="transaction-form-outcome-button"
+              name="form-transaction-type"
+              value="outcome"
+            />
+            <label for="transaction-form-outcome-button" class="button"
+              >지출</label
+            >
+          </div>
         </div>
 
         <div class="form-section">
@@ -113,7 +112,7 @@
 
         <div class="form-section">
           <label>금액</label>
-          <input required id="form-amount" type="number" />
+          <input required id="form-amount" type="text" />
         </div>
 
         <div class="form-section">
@@ -133,7 +132,7 @@
         </div>
 
         <div class="form-section">
-          <button id="form-submit-button" type="submit" class="button">
+          <button id="form-submit-button" type="submit" class="button primary">
             제출
           </button>
         </div>
@@ -142,7 +141,7 @@
 
     <dialog id="category-modal">
       <form method="dialog" id="category-form" class="category-form">
-        <div class="button-group button-group-column">
+        <div class="button-group">
           <input
             type="radio"
             id="category-button-1"
@@ -218,7 +217,10 @@
           />
           <label for="category-button-9" class="button">건강</label>
         </div>
-        <button type="submit" class="button">확인</button>
+
+        <div class="submit-button-wrapper">
+          <button type="submit" class="button primary">확인</button>
+        </div>
       </form>
     </dialog>
 
