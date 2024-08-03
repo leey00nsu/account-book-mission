@@ -40,6 +40,27 @@ app.get('/account-transaction', async (req, res) => {
   }
 });
 
+// 손익 계산서 조회 쿼리
+app.get('/report', async (req, res) => {
+  const { date } = req.query; // 쿼리 파라미터에서 type과 date를 추출
+  try {
+    const rows = await new Promise((resolve, reject) => {
+      db.getTransactionReport(date, (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching account transactions:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

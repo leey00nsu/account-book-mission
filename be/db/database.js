@@ -56,5 +56,54 @@ function getAccountTransaction(type, date, callback) {
   });
 }
 
+function getTransactionReport(date, callback) {
+  const query = `
+    SELECT income_outcome, category, SUM(amount) as total_amount
+    FROM account_transaction
+    WHERE date LIKE ?
+    GROUP BY income_outcome, category
+`;
+
+  db.all(query, [date + '%'], (err, rows) => {
+    if (err) {
+      console.error('account_transaction 테이블 조회 오류:', err.message);
+      callback(err, null);
+    }
+
+    // 결과를 incomes와 outcomes로 나누어 분류
+    // totalIncome, totalOutcome, profit 계산
+    const report = { incomes: [], outcomes: [] };
+
+    rows.forEach(row => {
+      const type = row.income_outcome === 1 ? 'incomes' : 'outcomes';
+
+      report[type].push({
+        category: row.category,
+        amount: row.total_amount,
+      });
+    });
+
+    const totalIncome = report.incomes.reduce(
+      (acc, income) => acc + income.amount,
+      0,
+    );
+
+    const totalOutcome = report.outcomes.reduce(
+      (acc, outcome) => acc + outcome.amount,
+      0,
+    );
+
+    const profit = totalIncome - totalOutcome;
+
+    callback(null, {
+      totalIncome,
+      totalOutcome,
+      incomes: report.incomes,
+      outcomes: report.outcomes,
+      profit,
+    });
+  });
+}
+
 // 모듈 내보내기
-module.exports = { getAccountTransaction };
+module.exports = { getAccountTransaction, getTransactionReport };
