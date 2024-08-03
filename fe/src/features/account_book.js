@@ -1,19 +1,127 @@
-function fetchAccountTransaction() {
-  fetch('http://localhost:3000/account_transaction')
-    .then(response => response.json())
-    .then(data => {
-      populateTable(data);
-    })
-    .catch(error => {
-      console.error('Error fetching accountTransaction:', error);
-    });
+
+document.addEventListener('DOMContentLoaded',()=>{
+   // 오늘 날짜 가져오기
+    let today = new Date();
+
+    // 년도와 일 추출하기
+    let year = today.getFullYear();
+    let month = String(today.getMonth()+1).padStart(2, '0'); // 일자가 한 자리 수일 경우 두 자리로 만들기 위해 padStart 사용
+
+    // 원하는 형식으로 변환
+
+    const monthCell = document.getElementById("transaction-month");
+    const yearCell = document.getElementById("transaction-year");
+    
+    monthCell.innerHTML = month;
+    yearCell.innerHTML = year;
+
+    fetchAccountTransaction(0,year+"-"+month);
+
+
+});
+
+
+document.querySelectorAll('input[name="category"]').forEach(radio => {
+  
+  radio.addEventListener('change', (event) => {
+      
+    const selectedValue = event.target.value;    
+    let incomeOutcome = 0;
+
+    if(selectedValue==='income') incomeOutcome= 1;
+    else if(selectedValue==='outcome') incomeOutcome = -1;
+
+    const month = document.getElementById("transaction-month").innerText;
+    const year = document.getElementById("transaction-year").innerText;
+    
+
+    fetchAccountTransaction(incomeOutcome,year+"-"+month);
+    
+  });
+});
+
+
+document.getElementById('before-month').addEventListener('click',()=>{
+      
+      let year = document.getElementById("transaction-year").innerText;
+      let month = document.getElementById("transaction-month").innerText;
+      if(month==='01'){
+        year = Number(year)-1;
+        month = '12';
+      }else month = Number(month)-1;
+      if(String(month).length==1) month = '0'+month;
+
+      const initialValue = document.querySelector('input[name="category"]:checked').value;
+      
+      let incomeOutcome = 0;
+      
+      if(initialValue==='income') incomeOutcome= 1;
+      else if(initialValue==='outcome') incomeOutcome = -1;
+
+      fetchAccountTransaction(incomeOutcome,year+"-"+month);
+
+      const monthCell = document.getElementById("transaction-month");
+      const yearCell = document.getElementById("transaction-year");
+      
+      monthCell.innerHTML = month;
+      yearCell.innerHTML = year;
+
+
+});
+
+document.getElementById('after-month').addEventListener('click',()=>{
+      let year = document.getElementById("transaction-year").innerText;
+      let month = document.getElementById("transaction-month").innerText;
+      if(month==='12'){
+        year = Number(year)+1;
+        month = '01';
+      }else month = Number(month)+1;
+      if(String(month).length==1) month = '0'+month;
+
+      
+      const initialValue = document.querySelector('input[name="category"]:checked').value;
+      
+      let incomeOutcome = 0;
+      
+      if(initialValue==='income') incomeOutcome= 1;
+      else if(initialValue==='outcome') incomeOutcome = -1;
+
+      fetchAccountTransaction(incomeOutcome,year+"-"+month);
+      fetchAccountTransaction('0',year+"-"+month);
+
+      const monthCell = document.getElementById("transaction-month");
+      const yearCell = document.getElementById("transaction-year");
+      
+      monthCell.innerHTML = month;
+      yearCell.innerHTML = year;
+});
+
+
+async function fetchAccountTransaction(income_outcome, date) {
+  try {
+    // API 요청 URL에 쿼리 파라미터를 추가할 수도 있습니다.
+    const response = await fetch(
+      `http://localhost:3000/account_transaction?income_outcome=${income_outcome}&date=${date}`,
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    transactionTable(data);
+  } catch (error) {
+    console.error('Error fetching accountTransaction:', error);
+  }
 }
 
-function populateTable(accountTransactions) {
+function transactionTable(accountTransactions) {
+
+  
+
   const tableBody = document.getElementById('account_transaction_body');
   tableBody.innerHTML = '';
-
+  console.log(accountTransactions);
   accountTransactions.forEach(transaction => {
+
     const row = document.createElement('tr');
 
     const dateCell = document.createElement('td');
@@ -29,13 +137,21 @@ function populateTable(accountTransactions) {
     descriptionCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
 
     const amountCell = document.createElement('td');
-    amountCell.textContent = `${transaction.amount}원`;
+    amountCell.textContent = transaction.amount;
     amountCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+
+    const incomeOutcomeCell = document.createElement('td');
+    let value = '수입';
+    
+    if(transaction.income_outcome===-1) value = '지출';
+    incomeOutcomeCell.textContent = value;
+    incomeOutcomeCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
 
     row.appendChild(dateCell);
     row.appendChild(categoryCell);
     row.appendChild(descriptionCell);
     row.appendChild(amountCell);
+    row.appendChild(incomeOutcomeCell);
 
     tableBody.appendChild(row);
   });

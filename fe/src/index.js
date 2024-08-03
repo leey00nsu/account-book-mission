@@ -6,6 +6,7 @@ import {
   showReportDataLoading,
   getTransactionReportData,
   reflectTransactionReport,
+  fetchAccountTransaction,
 } from './features/transactionReport';
 
 // DOM이 완전히 로드된 후 실행될 이벤트 리스너를 추가합니다.
@@ -21,6 +22,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 데이터 로딩 중임을 UI에 표시합니다.
 
+    
+  }
+  if(pageType === 'transactionReport'){
     fetchAccountTransaction();
   }
   // 현재 페이지가 'report' 페이지인 경우에만 실행합니다.

@@ -28,19 +28,28 @@ db.run(
   },
 );
 
-// 모든 account_transaction 조회 함수
-function getAccountTransaction(callback) {
-  db.all('SELECT * FROM account_transaction;', [], (err, rows) => {
+function getAccountTransaction(income_outcome, date, callback) {
+  let query = 'SELECT * FROM account_transaction where 1=1';
+ 
+  if (income_outcome !== '0' && income_outcome !== null && income_outcome !== undefined) {
+    query += ` AND income_outcome = ${income_outcome}`;
+  }
+
+  if (date !== null && date !== undefined) {
+    query += ` AND date like '${date}%'`;
+  }
+
+  console.log(query);
+
+  db.all(query, (err, rows) => {
     if (err) {
       console.error('account_transaction 테이블 조회 오류:', err.message);
       callback(err, null);
     } else {
-      console.log(rows + ' 성공');
       callback(null, rows);
     }
   });
 }
-
 
 
 // 모듈 내보내기

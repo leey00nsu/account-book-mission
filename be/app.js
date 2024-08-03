@@ -23,15 +23,16 @@ app.get('/pageB', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'pageB.html'));
 });
 
-// 데이터 API 엔드포인트
+// account_transaction 조회 쿼리
 app.get('/account_transaction', async (req, res) => {
+  const { income_outcome, date } = req.query; // 쿼리 파라미터에서 type과 date를 추출
   try {
     const rows = await new Promise((resolve, reject) => {
-      db.getAccountTransaction((err, rows) => {
+      db.getAccountTransaction(income_outcome, date, (err, rows) => {
+        // type과 date를 getAccountTransaction 함수에 전달
         if (err) {
           reject(err);
         } else {
-          console.log(rows + ' ?');
           resolve(rows);
         }
       });
@@ -42,6 +43,7 @@ app.get('/account_transaction', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
