@@ -1,146 +1,278 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // 오늘 날짜 가져오기
-  let today = new Date();
+import { addComma } from '../utils/addComma';
+import { extractNumber } from '../utils/extractNumber';
 
-  // 년도와 일 추출하기
-  let year = today.getFullYear();
-  let month = String(today.getMonth() + 1).padStart(2, '0'); // 일자가 한 자리 수일 경우 두 자리로 만들기 위해 padStart 사용
+// 보고서 데이터 로딩 중 UI 표시 함수
+export function showTransactionListLoading() {
+  // DOM 요소 선택
+  const transactionListTableBody = document.querySelector(
+    '#transaction-list-table tbody',
+  );
 
-  // 원하는 형식으로 변환
+  // 로딩 중 텍스트 표시
+  transactionListTableBody.innerHTML = '<span>loading ...</span>';
+}
 
-  const monthCell = document.getElementById('transaction-month');
-  const yearCell = document.getElementById('transaction-year');
+/**
+ *  거래 데이터를 요청하는 함수
+ */
+async function fetchAccountTransaction(transactionType, date) {
+  showTransactionListLoading();
 
-  monthCell.innerHTML = month;
-  yearCell.innerHTML = year;
-
-  fetchAccountTransaction(0, year + '-' + month);
-});
-
-document.querySelectorAll('input[name="category"]').forEach(radio => {
-  radio.addEventListener('change', event => {
-    const selectedValue = event.target.value;
-    let incomeOutcome = 0;
-
-    if (selectedValue === 'income') incomeOutcome = 1;
-    else if (selectedValue === 'outcome') incomeOutcome = -1;
-
-    const month = document.getElementById('transaction-month').innerText;
-    const year = document.getElementById('transaction-year').innerText;
-
-    fetchAccountTransaction(incomeOutcome, year + '-' + month);
-  });
-});
-
-document.getElementById('before-month').addEventListener('click', () => {
-  let year = document.getElementById('transaction-year').innerText;
-  let month = document.getElementById('transaction-month').innerText;
-  if (month === '01') {
-    year = Number(year) - 1;
-    month = '12';
-  } else month = Number(month) - 1;
-  if (String(month).length == 1) month = '0' + month;
-
-  const initialValue = document.querySelector(
-    'input[name="category"]:checked',
-  ).value;
-
-  let incomeOutcome = 0;
-
-  if (initialValue === 'income') incomeOutcome = 1;
-  else if (initialValue === 'outcome') incomeOutcome = -1;
-
-  fetchAccountTransaction(incomeOutcome, year + '-' + month);
-
-  const monthCell = document.getElementById('transaction-month');
-  const yearCell = document.getElementById('transaction-year');
-
-  monthCell.innerHTML = month;
-  yearCell.innerHTML = year;
-});
-
-document.getElementById('after-month').addEventListener('click', () => {
-  let year = document.getElementById('transaction-year').innerText;
-  let month = document.getElementById('transaction-month').innerText;
-  if (month === '12') {
-    year = Number(year) + 1;
-    month = '01';
-  } else month = Number(month) + 1;
-  if (String(month).length == 1) month = '0' + month;
-
-  const initialValue = document.querySelector(
-    'input[name="category"]:checked',
-  ).value;
-
-  let incomeOutcome = 0;
-
-  if (initialValue === 'income') incomeOutcome = 1;
-  else if (initialValue === 'outcome') incomeOutcome = -1;
-
-  fetchAccountTransaction(incomeOutcome, year + '-' + month);
-  fetchAccountTransaction('0', year + '-' + month);
-
-  const monthCell = document.getElementById('transaction-month');
-  const yearCell = document.getElementById('transaction-year');
-
-  monthCell.innerHTML = month;
-  yearCell.innerHTML = year;
-});
-
-async function fetchAccountTransaction(income_outcome, date) {
   try {
-    // API 요청 URL에 쿼리 파라미터를 추가할 수도 있습니다.
+    // fetch를 이용해 서버에 GET 요청을 보냅니다.
     const response = await fetch(
-      `http://localhost:3000/account_transaction?income_outcome=${income_outcome}&date=${date}`,
+      `http://localhost:3000/account-transaction?type=${transactionType}&date=${date}`,
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    transactionTable(data);
+
+    reflectTransactionList(data);
   } catch (error) {
     console.error('Error fetching accountTransaction:', error);
   }
 }
 
-function transactionTable(accountTransactions) {
-  const tableBody = document.getElementById('account_transaction_body');
-  tableBody.innerHTML = '';
-  console.log(accountTransactions);
+/**
+ * 거래 데이터를 테이블에 표시하는 함수
+ */
+function reflectTransactionList(accountTransactions) {
+  const transactionListTableBody = document.querySelector(
+    '#transaction-list-table tbody',
+  );
+
+  // 기존 테이블 내용 초기화
+  transactionListTableBody.innerHTML = '';
+
+  // 거래 데이터 순회하며 테이블에 행 추가
   accountTransactions.forEach(transaction => {
-    const row = document.createElement('tr');
+    const newRow = document.createElement('tr');
 
-    const dateCell = document.createElement('td');
-    dateCell.textContent = transaction.date;
-    dateCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+    newRow.innerHTML = `
+      <td>${transaction.date}</td>
+      <td>${transaction.category}</td>
+      <td>${transaction.description}</td>
+      <td>${addComma(transaction.amount)} 원</td>
+      <td>${transaction.type}</td>
+    `;
 
-    const categoryCell = document.createElement('td');
-    categoryCell.textContent = transaction.category;
-    categoryCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
-
-    const descriptionCell = document.createElement('td');
-    descriptionCell.textContent = transaction.description;
-    descriptionCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
-
-    const amountCell = document.createElement('td');
-    amountCell.textContent = transaction.amount;
-    amountCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
-
-    const incomeOutcomeCell = document.createElement('td');
-    let value = '수입';
-
-    if (transaction.income_outcome === -1) value = '지출';
-    incomeOutcomeCell.textContent = value;
-    incomeOutcomeCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
-
-    row.appendChild(dateCell);
-    row.appendChild(categoryCell);
-    row.appendChild(descriptionCell);
-    row.appendChild(amountCell);
-    row.appendChild(incomeOutcomeCell);
-
-    tableBody.appendChild(row);
+    transactionListTableBody.appendChild(newRow);
   });
+
+  // accountTransactions.forEach(transaction => {
+  //   const row = document.createElement('tr');
+
+  //   const dateCell = document.createElement('td');
+  //   dateCell.textContent = transaction.date;
+  //   dateCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+
+  //   const categoryCell = document.createElement('td');
+  //   categoryCell.textContent = transaction.category;
+  //   categoryCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+
+  //   const descriptionCell = document.createElement('td');
+  //   descriptionCell.textContent = transaction.description;
+  //   descriptionCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+
+  //   const amountCell = document.createElement('td');
+  //   amountCell.textContent = transaction.amount;
+  //   amountCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+
+  //   const incomeOutcomeCell = document.createElement('td');
+  //   let value = '수입';
+
+  //   if (transaction.income_outcome === -1) value = '지출';
+  //   incomeOutcomeCell.textContent = value;
+  //   incomeOutcomeCell.style.cssText = 'border: 1px solid #ddd; padding: 8px';
+
+  //   row.appendChild(dateCell);
+  //   row.appendChild(categoryCell);
+  //   row.appendChild(descriptionCell);
+  //   row.appendChild(amountCell);
+  //   row.appendChild(incomeOutcomeCell);
+
+  //   tableBody.appendChild(row);
+  // });
+}
+
+// 숫자에 3자리마다 콤마를 추가합니다.
+function inputNumberFormat(obj) {
+  obj.value = comma(uncomma(obj.value));
+}
+
+// 현재 날짜 데이터를 UI에 반영하는 함수
+function reflectDate() {
+  const transactionDate = document.getElementById('transaction-date');
+
+  // 오늘 날짜 가져오기
+  let today = new Date();
+
+  // 오늘 날짜를 'YYYY-MM' 형식으로 변환하여 폼에 반영
+  transactionDate.value = today.toISOString().slice(0, 7);
+
+  // 초기 데이터 요청
+  fetchAccountTransaction('all', transactionDate.value);
+}
+
+// 이전 달로 이동하는 함수
+function goPreviousMonth() {
+  const transactionDate = document.getElementById('transaction-date');
+
+  let currentDate = new Date(transactionDate.value);
+
+  // 이전 달로 설정
+  currentDate.setMonth(currentDate.getMonth() - 1);
+
+  // 이전 달 날짜를 'YYYY-MM' 형식으로 변환하여 폼에 반영
+
+  transactionDate.value = currentDate.toISOString().slice(0, 7);
+
+  // change 이벤트 발생
+  const event = new Event('change');
+  transactionDate.dispatchEvent(event);
+}
+
+// 다음 달로 이동하는 함수
+function goNextMonth() {
+  const transactionDate = document.getElementById('transaction-date');
+
+  let currentDate = new Date(transactionDate.value);
+
+  // 다음 달로 설정
+  currentDate.setMonth(currentDate.getMonth() + 1);
+
+  // 다음 달 날짜를 'YYYY-MM' 형식으로 변환하여 폼에 반영
+
+  transactionDate.value = currentDate.toISOString().slice(0, 7);
+
+  // change 이벤트 발생
+  const event = new Event('change');
+  transactionDate.dispatchEvent(event);
+}
+
+/**
+ * 현재 설정된 거래 유형을 가져오는 함수
+ */
+function getTransactionType() {
+  const transactionType = document.querySelector(
+    'input[name="transaction-type"]:checked',
+  ).value;
+
+  return transactionType;
+}
+
+/**
+ *  현재 설정된 거래 날짜를 가져오는 함수
+ */
+function getTransactionDate() {
+  const transactionDate = document.getElementById('transaction-date').value;
+
+  return transactionDate;
+}
+
+function transactionListInit() {
+  reflectDate();
+
+  // 이전 달 버튼 클릭 이벤트 리스너
+  document.getElementById('previous-month').addEventListener('click', () => {
+    goPreviousMonth();
+  });
+
+  // 다음 달 버튼 클릭 이벤트 리스너
+  document.getElementById('next-month').addEventListener('click', () => {
+    goNextMonth();
+  });
+
+  // 거래 날짜 변경 이벤트 리스너
+  document
+    .querySelector('#transaction-date')
+    .addEventListener('change', event => {
+      const currentType = getTransactionType();
+      const currentDate = event.target.value;
+
+      fetchAccountTransaction(currentType, currentDate);
+    });
+
+  // 거래 유형 변경 이벤트 리스너
+  document
+    .querySelector('#transaction-type-group')
+    .addEventListener('change', event => {
+      const currentType = event.target.value;
+      const currentDate = getTransactionDate();
+
+      fetchAccountTransaction(currentType, currentDate);
+    });
+
+  // document.querySelectorAll('input[name="category"]').forEach(radio => {
+  //   radio.addEventListener('change', event => {
+  //     const selectedValue = event.target.value;
+  //     let incomeOutcome = 0;
+
+  //     if (selectedValue === 'income') incomeOutcome = 1;
+  //     else if (selectedValue === 'outcome') incomeOutcome = -1;
+
+  //     const month = document.getElementById('transaction-month').innerText;
+  //     const year = document.getElementById('transaction-year').innerText;
+
+  //     fetchAccountTransaction(incomeOutcome, year + '-' + month);
+  //   });
+  // });
+
+  // document.getElementById('before-month').addEventListener('click', () => {
+  //   let year = document.getElementById('transaction-year').innerText;
+  //   let month = document.getElementById('transaction-month').innerText;
+  //   if (month === '01') {
+  //     year = Number(year) - 1;
+  //     month = '12';
+  //   } else month = Number(month) - 1;
+  //   if (String(month).length == 1) month = '0' + month;
+
+  //   const initialValue = document.querySelector(
+  //     'input[name="category"]:checked',
+  //   ).value;
+
+  //   let incomeOutcome = 0;
+
+  //   if (initialValue === 'income') incomeOutcome = 1;
+  //   else if (initialValue === 'outcome') incomeOutcome = -1;
+
+  //   fetchAccountTransaction(incomeOutcome, year + '-' + month);
+
+  //   const monthCell = document.getElementById('transaction-month');
+  //   const yearCell = document.getElementById('transaction-year');
+
+  //   monthCell.innerHTML = month;
+  //   yearCell.innerHTML = year;
+  // });
+
+  // document.getElementById('after-month').addEventListener('click', () => {
+  //   let year = document.getElementById('transaction-year').innerText;
+  //   let month = document.getElementById('transaction-month').innerText;
+  //   if (month === '12') {
+  //     year = Number(year) + 1;
+  //     month = '01';
+  //   } else month = Number(month) + 1;
+  //   if (String(month).length == 1) month = '0' + month;
+
+  //   const initialValue = document.querySelector(
+  //     'input[name="category"]:checked',
+  //   ).value;
+
+  //   let incomeOutcome = 0;
+
+  //   if (initialValue === 'income') incomeOutcome = 1;
+  //   else if (initialValue === 'outcome') incomeOutcome = -1;
+
+  //   fetchAccountTransaction(incomeOutcome, year + '-' + month);
+  //   fetchAccountTransaction('0', year + '-' + month);
+
+  //   const monthCell = document.getElementById('transaction-month');
+  //   const yearCell = document.getElementById('transaction-year');
+
+  //   monthCell.innerHTML = month;
+  //   yearCell.innerHTML = year;
+  // });
 }
 
 /**
@@ -153,7 +285,7 @@ function submitForm() {
   ).value;
 
   // 폼에서 거래 정보 가져오기
-  const transactionAmount = Number(
+  const transactionAmount = extractNumber(
     document.querySelector('#form-amount').value,
   );
   const transactionDate = document.querySelector('#form-date').value;
@@ -206,10 +338,11 @@ function closeModal() {
 /**
  * 거래 폼 초기화 및 이벤트 리스너 설정 함수
  */
-export function transactionFormInit() {
+function transactionFormInit() {
   const transactionForm = document.getElementById('transaction-form');
   const categoryForm = document.getElementById('category-form');
   const formCategoryButton = document.getElementById('form-category');
+  const amountInput = document.getElementById('form-amount');
 
   // 카테고리 폼 제출 이벤트 리스너
   categoryForm.addEventListener('submit', e => {
@@ -231,4 +364,14 @@ export function transactionFormInit() {
   formCategoryButton.addEventListener('click', () => {
     openModal(); // 카테고리 선택 모달 열기
   });
+
+  // 금액 입력 필드 입력 이벤트 리스너
+  amountInput.addEventListener('input', e => {
+    e.target.value = addComma(extractNumber(e.target.value)) + ' 원';
+  });
+}
+
+export function accountBookInit() {
+  transactionListInit();
+  transactionFormInit();
 }

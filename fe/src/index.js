@@ -1,6 +1,6 @@
 // 가계부 관련 기능을 가져옵니다.
-import { transactionFormInit } from './features/accountBook';
 // 거래 보고서 관련 기능을 가져옵니다.
+import { accountBookInit } from './features/accountBook';
 import {
   getTransactionReportData,
   reflectDate,
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 현재 페이지가 'account-book' 페이지인 경우에만 실행합니다.
   if (pageType === 'account-book') {
-    transactionFormInit();
+    accountBookInit();
   }
 
   // 현재 페이지가 'report' 페이지인 경우에만 실행합니다.

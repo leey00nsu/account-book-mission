@@ -17,15 +17,16 @@
 .transaction-list {
   display: flex;
   flex-direction: column;
-  flex-grow: 2;
+  flex-grow: 1;
   gap: 8px;
   padding: 8px;
 }
 
 .transaction-form {
+  width: 300px;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   gap: 8px;
   padding: 8px;
 }
@@ -75,7 +76,7 @@ input[type='radio']:checked + .button {
   color: #fff;
 }
 
-.form-section label {
+label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
@@ -83,7 +84,7 @@ input[type='radio']:checked + .button {
   font-size: 14px;
 }
 
-.form-section input {
+input {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid #c6c9cc;
@@ -94,48 +95,48 @@ input[type='radio']:checked + .button {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-section input[type='button'] {
+input[type='button'] {
   background-color: #c6c9cc;
   cursor: pointer;
 }
 
-.form-section input[type='date']::-webkit-calendar-picker-indicator {
+input[type='date']::-webkit-calendar-picker-indicator {
   color: #42444e;
   opacity: 0.6;
   filter: invert(0.8);
 }
 
-.form-section input[type='date']:hover {
+input[type='date']:hover {
   border-color: #a0a3a7;
 }
 
-.form-section input[type='date']:focus {
+input[type='date']:focus {
   outline: none;
   border-color: #42444e;
   box-shadow: 0 0 0 2px rgba(66, 68, 78, 0.2);
 }
 
 /* 크로스 브라우저 지원을 위한 스타일 */
-.form-section input[type='date']::-webkit-datetime-edit {
+input[type='date']::-webkit-datetime-edit {
   padding: 0;
 }
 
-.form-section input[type='date']::-webkit-datetime-edit-fields-wrapper {
+input[type='date']::-webkit-datetime-edit-fields-wrapper {
   background: transparent;
 }
 
-.form-section input[type='date']::-webkit-datetime-edit-text {
+input[type='date']::-webkit-datetime-edit-text {
   color: #42444e;
   padding: 0 2px;
 }
 
-.form-section input[type='date']::-webkit-datetime-edit-month-field,
-.form-section input[type='date']::-webkit-datetime-edit-day-field,
-.form-section input[type='date']::-webkit-datetime-edit-year-field {
+input[type='date']::-webkit-datetime-edit-month-field,
+input[type='date']::-webkit-datetime-edit-day-field,
+input[type='date']::-webkit-datetime-edit-year-field {
   color: #42444e;
 }
 
-.form-section input[type='date']::-webkit-inner-spin-button {
+input[type='date']::-webkit-inner-spin-button {
   display: none;
 }
 
@@ -176,12 +177,14 @@ input[type='radio']:checked + .button {
   th,
   td {
     padding: 6px 15px;
+    min-width: 100px;
   }
 
   th {
     background: #42444e;
     color: #fff;
     text-align: left;
+    white-space: nowrap;
   }
 
   tr:first-child th:first-child {
