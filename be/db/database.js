@@ -105,5 +105,31 @@ function getTransactionReport(date, callback) {
   });
 }
 
+function insertTransaction(transaction, callback) {
+  db.run(
+    `INSERT INTO account_transaction (income_expense, date, amount, category, description) 
+     VALUES (?, ?, ?, ?, ?)`,
+    [
+      transaction.type,
+      transaction.date,
+      transaction.amount,
+      transaction.category,
+      transaction.description,
+    ],
+    function (err) {
+      if (err) {
+        console.error('데이터 삽입 오류:', err.message);
+        return callback(err, null); // 오류 발생 시 콜백 호출
+      }
+      console.log(`데이터 삽입 성공: 행 ID ${this.lastID}`);
+      return callback(null, this.lastID); // 성공 시 삽입된 행 ID 전달
+    },
+  );
+}
+
 // 모듈 내보내기
-module.exports = { getAccountTransaction, getTransactionReport };
+module.exports = {
+  getAccountTransaction,
+  getTransactionReport,
+  insertTransaction,
+};
