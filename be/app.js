@@ -3,7 +3,7 @@ const db = require('../be/db/database.js');
 const app = express();
 const PORT = 3000;
 const cors = require('cors');
-
+app.use(express.json());
 app.use(cors());
 
 // account_transaction 조회 쿼리
@@ -59,6 +59,20 @@ app.get('/report', async (req, res) => {
     console.error('Error fetching account transactions:', err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+// account_transaction 삽입 쿼리
+app.post('/account-transaction', (req, res) => {
+  const transaction = req.body;
+  transaction.type = transaction.type === 'income' ? 1 : 0;
+  db.insertTransaction(transaction, (err, lastID) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ error: '데이터 삽입 오류: ' + err.message });
+    }
+    return res.status(201).json({ success: true, lastID });
+  });
 });
 
 app.listen(PORT, () => {
