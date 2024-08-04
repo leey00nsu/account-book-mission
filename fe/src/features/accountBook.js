@@ -28,7 +28,7 @@ async function fetchAccountTransaction(transactionType, date) {
     }
     const data = await response.json();
 
-    reflectTransactionList(data);
+    renderTransactionList(data);
   } catch (error) {
     console.error('Error fetching accountTransaction:', error);
   }
@@ -43,14 +43,17 @@ async function inPutTransaction(data) {
       },
       body: JSON.stringify(data),
     });
-    console.log('Transaction result');
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
     const result = await response.json();
     const type = getTransactionType();
     const date = getTransactionDate();
+
     fetchAccountTransaction(type, date);
+
     return result;
   } catch (error) {
     console.error('Error in inPutTransaction:', error);
@@ -61,7 +64,7 @@ async function inPutTransaction(data) {
 /**
  * 거래 데이터를 테이블에 표시하는 함수
  */
-function reflectTransactionList(accountTransactions) {
+function renderTransactionList(accountTransactions) {
   const transactionListTableBody = document.querySelector(
     '#transaction-list-table tbody',
   );
@@ -85,13 +88,8 @@ function reflectTransactionList(accountTransactions) {
   });
 }
 
-// 숫자에 3자리마다 콤마를 추가합니다.
-function inputNumberFormat(obj) {
-  obj.value = comma(uncomma(obj.value));
-}
-
 // 현재 날짜 데이터를 UI에 반영하는 함수
-function reflectDate() {
+function renderDate() {
   const transactionDate = document.getElementById('transaction-date');
 
   // 오늘 날짜 가져오기
@@ -161,7 +159,7 @@ function getTransactionDate() {
 }
 
 function transactionListInit() {
-  reflectDate();
+  renderDate();
 
   // 이전 달 버튼 클릭 이벤트 리스너
   document.getElementById('previous-month').addEventListener('click', () => {
@@ -208,7 +206,7 @@ async function submitForm() {
   const transactionType = document.querySelector(
     'input[name="form-transaction-type"]:checked',
   ).value;
-  console.log('dddedwa');
+
   // 폼에서 거래 정보 가져오기
   const transactionAmount = extractNumber(
     document.querySelector('#form-amount').value,
@@ -217,6 +215,7 @@ async function submitForm() {
   const transactionDescription =
     document.querySelector('#form-description').value;
   const transactionCategory = document.querySelector('#form-category').value;
+
   try {
     // 제출할 데이터 객체 생성
     const body = {
@@ -236,7 +235,7 @@ async function submitForm() {
 /**
  * 선택된 카테고리를 폼에 반영하는 함수
  */
-function reflectCategory() {
+function renderCategory() {
   // 선택된 카테고리 유형 가져오기
   const categoryType = document.querySelector(
     'input[name="category-type"]:checked',
@@ -276,7 +275,7 @@ function transactionFormInit() {
   categoryForm.addEventListener('submit', e => {
     e.preventDefault(); // 기본 제출 동작 방지
 
-    reflectCategory(); // 선택된 카테고리 반영
+    renderCategory(); // 선택된 카테고리 반영
 
     closeModal(); // 모달 닫기
   });

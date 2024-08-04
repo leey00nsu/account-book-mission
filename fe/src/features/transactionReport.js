@@ -227,7 +227,7 @@ function showReportDataLoading() {
 }
 
 // 거래 보고서 데이터를 UI에 반영하는 함수
-function reflectTransactionReport(data) {
+function renderTransactionReport(data) {
   // DOM 요소 선택
 
   const totalIncome = document.getElementById('total-income');
@@ -291,7 +291,7 @@ function getDate() {
 }
 
 // 날짜 데이터를 UI에 반영하는 함수
-function reflectDate() {
+function renderDate() {
   const [currentYear, currentMonth] = getDate().split('-');
   const { firstDay, lastDay } = getFirstAndLastDay(
     Number(currentYear),
@@ -310,11 +310,11 @@ function reflectDate() {
  * 거래 보고서 페이지 초기화 함수
  */
 export async function reportInit() {
-  reflectDate();
+  renderDate();
 
   // 거래 보고서 데이터를 비동기적으로 가져옵니다.
   const data = await fetchTransactionReport();
 
   // 가져온 데이터를 UI에 반영합니다.
-  reflectTransactionReport(data);
+  renderTransactionReport(data);
 }
