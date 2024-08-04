@@ -246,3 +246,11 @@ dialog {
     border-bottom-right-radius: 6px;
   }
 }
+
+.text-primary {
+  color: #1c7ed6;
+}
+
+.text-danger {
+  color: #f03e3e;
+}

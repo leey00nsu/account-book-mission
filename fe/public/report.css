@@ -34,6 +34,7 @@ body {
   padding: 8px;
   font-size: large;
   font-weight: 600;
+  gap: 4px;
 }
 
 .transaction-report-list-table {
@@ -89,4 +90,17 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.summary-wrapper {
+  font-size: x-large;
+  font-weight: 600;
+}
+
+.text-primary {
+  color: #1c7ed6;
+}
+
+.text-danger {
+  color: #f03e3e;
 }

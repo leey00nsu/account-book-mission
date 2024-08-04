@@ -75,13 +75,15 @@ function renderTransactionList(accountTransactions) {
   // 거래 데이터 순회하며 테이블에 행 추가
   accountTransactions.forEach(transaction => {
     const newRow = document.createElement('tr');
+    const isIncome = transaction.type === '수입';
+    const textClass = isIncome ? 'text-primary' : 'text-danger';
 
     newRow.innerHTML = `
       <td>${transaction.date}</td>
       <td>${transaction.category}</td>
       <td>${transaction.description}</td>
       <td>${addComma(transaction.amount)} 원</td>
-      <td>${transaction.type}</td>
+      <td class=${textClass}>${transaction.type}</td>
     `;
 
     transactionListTableBody.appendChild(newRow);
