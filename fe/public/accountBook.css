@@ -206,8 +206,8 @@ dialog {
 
   th,
   td {
+    min-width: 120px;
     padding: 6px 15px;
-    min-width: 100px;
   }
 
   th {
@@ -253,4 +253,8 @@ dialog {
 
 .text-danger {
   color: #f03e3e;
+}
+
+.text-center {
+  text-align: center;
 }

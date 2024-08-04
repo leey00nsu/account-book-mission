@@ -39,15 +39,22 @@ function showReportDataLoading() {
   // 로딩 중 텍스트 표시
   totalIncome.innerHTML = '<span>loading ...</span>';
   totalexpense.innerHTML = '<span>loading ...</span>';
-  incomeListTableBody.innerHTML = '<span>loading ...</span>';
-  expenseListTableBody.innerHTML = '<span>loading ...</span>';
+  incomeListTableBody.innerHTML = `<tr>
+      <td colspan='5'>
+        <p class='text-center'>loading ...</p>
+      </td>
+    </tr>  `;
+  expenseListTableBody.innerHTML = `<tr>
+      <td colspan='5'>
+        <p class='text-center'>loading ...</p>
+      </td>
+    </tr>  `;
   summaryProfit.innerHTML = '<span>loading ...</span>';
 }
 
 // 거래 보고서 데이터를 UI에 반영하는 함수
 function renderTransactionReport(data) {
   // DOM 요소 선택
-
   const totalIncome = document.getElementById('total-income');
   const totalExpense = document.getElementById('total-expense');
   const incomeListTableBody = document.querySelector(
@@ -63,8 +70,8 @@ function renderTransactionReport(data) {
   totalExpense.innerHTML = `<span>${addComma(data.totalExpense)} 원</span>`;
 
   // 기존 테이블 내용 초기화
-  incomeListTableBody.innerHTML = '<span></span>';
-  expenseListTableBody.innerHTML = '<span></span>';
+  incomeListTableBody.innerHTML = '';
+  expenseListTableBody.innerHTML = '';
 
   // 수입 데이터 순회하며 테이블에 행 추가
   data.incomes.forEach(income => {
@@ -78,6 +85,16 @@ function renderTransactionReport(data) {
     incomeListTableBody.appendChild(newRow);
   });
 
+  if (data.incomes.length === 0) {
+    incomeListTableBody.innerHTML = `
+    <tr>
+      <td colspan='5'>
+        <p class='text-center'>거래 내역이 없습니다.</p>
+      </td>
+    </tr>
+    `;
+  }
+
   // 지출 데이터 순회하며 테이블에 행 추가
   data.expenses.forEach(expense => {
     const newRow = document.createElement('tr');
@@ -89,6 +106,16 @@ function renderTransactionReport(data) {
 
     expenseListTableBody.appendChild(newRow);
   });
+
+  if (data.expenses.length === 0) {
+    expenseListTableBody.innerHTML = `
+    <tr>
+      <td colspan='5'>
+        <p class='text-center'>거래 내역이 없습니다.</p>
+      </td>
+    </tr>
+    `;
+  }
 
   summaryProfit.innerHTML = `<span>${addComma(data.profit)} 원</span>`;
 }

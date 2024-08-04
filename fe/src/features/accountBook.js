@@ -9,7 +9,13 @@ export function showTransactionListLoading() {
   );
 
   // 로딩 중 텍스트 표시
-  transactionListTableBody.innerHTML = '<span>loading ...</span>';
+  transactionListTableBody.innerHTML = `
+  <tr>
+    <td colspan='5'>
+      <p class='text-center'>loading ...</p>
+    </td>
+  </tr>  
+  `;
 }
 
 /**
@@ -71,6 +77,18 @@ function renderTransactionList(accountTransactions) {
 
   // 기존 테이블 내용 초기화
   transactionListTableBody.innerHTML = '';
+
+  if (accountTransactions.length === 0) {
+    transactionListTableBody.innerHTML = `
+    <tr>
+      <td colspan='5'>
+        <p class='text-center'>거래 내역이 없습니다.</p>
+      </td>
+    </tr>
+    `;
+
+    return;
+  }
 
   // 거래 데이터 순회하며 테이블에 행 추가
   accountTransactions.forEach(transaction => {
