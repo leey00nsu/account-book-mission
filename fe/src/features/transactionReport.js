@@ -1,5 +1,6 @@
 import { addComma } from '../utils/addComma';
 import { getFirstAndLastDay } from '../utils/getFirstAndLastDay';
+import { HOST } from '../../host';
 
 /**
  *  거래 보고서 데이터를 요청하는 함수
@@ -11,7 +12,7 @@ async function fetchTransactionReport() {
 
   try {
     // fetch를 이용해 서버에 GET 요청을 보냅니다.
-    const response = await fetch(`http://localhost:3000/report?date=${date}`);
+    const response = await fetch(`${HOST}/report?date=${date}`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

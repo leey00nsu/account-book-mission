@@ -1,5 +1,6 @@
 import { addComma } from '../utils/addComma';
 import { extractNumber } from '../utils/extractNumber';
+import { HOST } from '../../host';
 
 // 보고서 데이터 로딩 중 UI 표시 함수
 export function showTransactionListLoading() {
@@ -27,7 +28,7 @@ async function fetchAccountTransaction(transactionType, date) {
   try {
     // fetch를 이용해 서버에 GET 요청을 보냅니다.
     const response = await fetch(
-      `http://localhost:3000/account-transaction?type=${transactionType}&date=${date}`,
+      `${HOST}/account-transaction?type=${transactionType}&date=${date}`,
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -42,7 +43,7 @@ async function fetchAccountTransaction(transactionType, date) {
 // 거래 데이터를 삽입하는 함수
 async function inPutTransaction(data) {
   try {
-    const response = await fetch('http://localhost:3000/account-transaction', {
+    const response = await fetch(`${HOST}/account-transaction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
